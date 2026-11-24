@@ -1,0 +1,9 @@
+.env
+storage/
+_backup_*/
+pencilplaybook/
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.bat

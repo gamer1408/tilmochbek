@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: tilmochbek
+    runtime: docker
+    plan: starter            # free plan sleeps and has no disk: users/plans would be lost
+    healthCheckPath: /api/health
+    autoDeploy: true
+    disk:
+      name: storage
+      mountPath: /app/storage
+      sizeGB: 5
+    envVars:
+      - {key: PUBLIC_BASE_URL, sync: false}
+      - {key: GEMINI_API_KEY, sync: false}
+      - {key: GEMINI_MODEL, value: gemini-2.5-flash}
+      - {key: GROQ_API_KEY, sync: false}
+      - {key: GOOGLE_CLIENT_ID, sync: false}
+      - {key: TELEGRAM_BOT_TOKEN, sync: false}
+      - {key: TELEGRAM_BOT_USERNAME, sync: false}
+      - {key: JWT_SECRET, sync: false}
+      - {key: ADMIN_KEY, sync: false}
+      - {key: ADMIN_TELEGRAM_IDS, sync: false}
+      - {key: PAYMENT_INFO, sync: false}
+      - {key: MAX_PARALLEL_JOBS, value: "2"}
+      - {key: CLICK_SERVICE_ID, sync: false}
+      - {key: CLICK_MERCHANT_ID, sync: false}
+      - {key: CLICK_SECRET_KEY, sync: false}
+      - {key: CLICK_MERCHANT_USER_ID, sync: false}

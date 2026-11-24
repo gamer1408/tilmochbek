@@ -1,0 +1,491 @@
+/* ==========================================================================
+   TILMOCHBEK.UZ — AUTHENTIK EDITORIAL ART DESIGN SYSTEM
+   Modern High-Fashion Brutalism | Technical Grid Indexing | Graphite Matte & Acid Lime
+   ========================================================================== */
+
+@import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800;900&display=swap');
+
+:root {
+    --bg-obsidian: #0E0E12;
+    --bg-surface: #15151A;
+    --bg-surface-elevated: #1B1B22;
+    --bg-card: #121217;
+    --bg-card-hover: #181820;
+    
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --border-grid: rgba(255, 255, 255, 0.035);
+    
+    --accent-lime: #D4FF00;
+    --accent-lime-hover: #E2FF33;
+    --accent-lime-muted: rgba(212, 255, 0, 0.12);
+    --accent-lime-glow: rgba(212, 255, 0, 0.25);
+    
+    --text-white: #FFFFFF;
+    --text-muted: #71717A;
+    --text-subtle: #A1A1AA;
+    
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', 'JetBrains Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-obsidian);
+    color: var(--text-white);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+    background-image: 
+        linear-gradient(to right, var(--border-grid) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center top;
+}
+
+/* Typography styles */
+.font-display {
+    font-family: var(--font-display);
+}
+
+.font-mono-tech {
+    font-family: var(--font-mono);
+}
+
+.font-body {
+    font-family: var(--font-body);
+}
+
+/* Custom Text Selection */
+::selection {
+    background-color: var(--accent-lime);
+    color: #000000;
+}
+
+/* ==========================================================================
+   EDITORIAL GEOMETRIC CONTAINERS & CARDS
+   ========================================================================== */
+
+.editorial-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    position: relative;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.editorial-card:hover {
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Corner Crosshair Markers (+) */
+.corner-crosshairs {
+    position: relative;
+}
+
+.corner-crosshairs::before,
+.corner-crosshairs::after {
+    content: '+';
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 5;
+    transition: color 0.2s ease;
+}
+
+.corner-crosshairs::before {
+    top: 6px;
+    left: 8px;
+}
+
+.corner-crosshairs::after {
+    top: 6px;
+    right: 8px;
+}
+
+.corner-crosshairs-bottom::before,
+.corner-crosshairs-bottom::after {
+    content: '+';
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1;
+    color: var(--text-muted);
+    pointer-events: none;
+    z-index: 5;
+    transition: color 0.2s ease;
+}
+
+.corner-crosshairs-bottom::before {
+    bottom: 6px;
+    left: 8px;
+}
+
+.corner-crosshairs-bottom::after {
+    bottom: 6px;
+    right: 8px;
+}
+
+.corner-crosshairs:hover::before,
+.corner-crosshairs:hover::after,
+.corner-crosshairs:hover .corner-crosshairs-bottom::before,
+.corner-crosshairs:hover .corner-crosshairs-bottom::after {
+    color: var(--accent-lime);
+}
+
+/* ==========================================================================
+   NAVIGATION & HEADER
+   ========================================================================== */
+
+.editorial-header {
+    background: rgba(14, 14, 18, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-subtle);
+}
+
+.editorial-tab {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--text-subtle);
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    text-transform: uppercase;
+}
+
+.editorial-tab:hover {
+    color: var(--text-white);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.editorial-tab.active {
+    color: #000000;
+    background: var(--accent-lime);
+    font-weight: 700;
+    border-color: var(--accent-lime);
+    box-shadow: 0 0 16px rgba(212, 255, 0, 0.3);
+}
+
+.editorial-outline-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--border-strong);
+    color: var(--text-white);
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.editorial-outline-btn:hover {
+    background: var(--text-white);
+    color: #000000;
+    border-color: var(--text-white);
+}
+
+/* ==========================================================================
+   INPUT CONSOLE & RETRO TECH FIELDS
+   ========================================================================== */
+
+.editorial-input-wrapper {
+    position: relative;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    transition: all 0.2s ease;
+}
+
+.editorial-input-wrapper:focus-within {
+    border-color: var(--accent-lime);
+    box-shadow: 0 0 0 1px var(--accent-lime), 0 0 24px rgba(212, 255, 0, 0.15);
+}
+
+.editorial-input {
+    background: transparent !important;
+    color: var(--text-white) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 13.5px !important;
+    letter-spacing: -0.01em !important;
+    outline: none !important;
+    border: none !important;
+    width: 100% !important;
+    caret-color: var(--accent-lime) !important;
+}
+
+.editorial-input::placeholder {
+    color: var(--text-muted) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 12.5px !important;
+}
+
+/* Chrome autofill fix */
+.editorial-input:-webkit-autofill,
+.editorial-input:-webkit-autofill:hover, 
+.editorial-input:-webkit-autofill:focus,
+.editorial-input:-webkit-autofill:active {
+    -webkit-text-fill-color: #FFFFFF !important;
+    -webkit-box-shadow: 0 0 0px 1000px #15151A inset !important;
+    box-shadow: 0 0 0px 1000px #15151A inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+    caret-color: var(--accent-lime) !important;
+}
+
+.editorial-tag-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-subtle);
+    transition: all 0.15s ease;
+}
+
+.editorial-tag-btn:hover {
+    background: var(--accent-lime);
+    color: #000000;
+    border-color: var(--accent-lime);
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   EDITORIAL CASSETTE VOICE CARDS
+   ========================================================================== */
+
+.editorial-voice-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+}
+
+.editorial-voice-card:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: var(--bg-surface-elevated);
+    transform: translateY(-2px);
+}
+
+.editorial-voice-card.active {
+    border-color: var(--accent-lime) !important;
+    background: #17181F !important;
+    box-shadow: 0 0 0 1px var(--accent-lime), 0 8px 30px rgba(212, 255, 0, 0.12);
+}
+
+.editorial-voice-card.active .voice-index-tag {
+    background: var(--accent-lime);
+    color: #000000;
+    border-color: var(--accent-lime);
+}
+
+.editorial-voice-card.active .voice-radio-indicator {
+    border-color: var(--accent-lime);
+    background: var(--accent-lime);
+}
+
+.editorial-voice-card.active .voice-wave-bar {
+    background: var(--accent-lime);
+}
+
+/* Waveform Visualizer Animation */
+.waveform-container {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 20px;
+}
+
+.voice-wave-bar {
+    width: 3px;
+    background: var(--text-muted);
+    border-radius: 1px;
+    transition: background-color 0.2s ease, height 0.3s ease;
+}
+
+.editorial-voice-card:hover .voice-wave-bar {
+    background: var(--text-white);
+}
+
+.editorial-voice-card.active .voice-wave-bar:nth-child(1) { height: 14px; animation: eqWave 1.2s infinite ease-in-out 0.1s; }
+.editorial-voice-card.active .voice-wave-bar:nth-child(2) { height: 18px; animation: eqWave 1.4s infinite ease-in-out 0.3s; }
+.editorial-voice-card.active .voice-wave-bar:nth-child(3) { height: 10px; animation: eqWave 1.1s infinite ease-in-out 0.2s; }
+.editorial-voice-card.active .voice-wave-bar:nth-child(4) { height: 16px; animation: eqWave 1.3s infinite ease-in-out 0.4s; }
+.editorial-voice-card.active .voice-wave-bar:nth-child(5) { height: 8px;  animation: eqWave 1.5s infinite ease-in-out 0.2s; }
+
+@keyframes eqWave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1.2); }
+}
+
+/* ==========================================================================
+   PRIMARY ACTION CTA (ACID LIME BRUTALIST)
+   ========================================================================== */
+
+.editorial-cta-btn {
+    background: var(--accent-lime);
+    color: #000000;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 6px 0px rgba(212, 255, 0, 0.35);
+}
+
+.editorial-cta-btn:hover:not(:disabled) {
+    background: var(--accent-lime-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 0px rgba(212, 255, 0, 0.45);
+}
+
+.editorial-cta-btn:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px rgba(212, 255, 0, 0.35);
+}
+
+.editorial-cta-btn:disabled {
+    background: #27272A;
+    color: #71717A;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   PIPELINE STAGES TRACKER (01/05 -> 05/05)
+   ========================================================================== */
+
+.pipeline-progress-bar {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    height: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pipeline-progress-fill {
+    background: var(--accent-lime);
+    height: 100%;
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 12px rgba(212, 255, 0, 0.5);
+}
+
+.pipeline-step-node {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+    transition: all 0.25s ease;
+    color: var(--text-muted);
+}
+
+.pipeline-step-node.active {
+    background: rgba(212, 255, 0, 0.08);
+    border-color: var(--accent-lime);
+    color: var(--accent-lime);
+    box-shadow: 0 0 16px rgba(212, 255, 0, 0.2);
+    font-weight: 700;
+}
+
+.pipeline-step-node.completed {
+    background: var(--bg-surface-elevated);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-white);
+}
+
+.pipeline-step-node.completed .step-index-badge {
+    background: var(--text-white);
+    color: #000000;
+}
+
+/* ==========================================================================
+   SUBTITLE SEGMENT CARDS & HISTORY
+   ========================================================================== */
+
+.segment-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.15s ease;
+}
+
+.segment-card:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: var(--bg-surface-elevated);
+}
+
+.history-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.history-card:hover {
+    border-color: var(--accent-lime);
+    background: var(--bg-surface);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* ==========================================================================
+   CUSTOM SCROLLBAR & MODALS
+   ========================================================================== */
+
+.editorial-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+.editorial-scrollbar::-webkit-scrollbar-track {
+    background: var(--bg-obsidian);
+}
+
+.editorial-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.editorial-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-lime);
+}
+
+.editorial-modal-backdrop {
+    background: rgba(8, 8, 11, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+
+/* ===== v7: pricing, usage ===== */
+.tb-plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+.tb-plan { background: var(--bg-card); border: 1px solid var(--border-strong); padding: 20px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+.tb-plan.featured { border-color: var(--accent-lime); box-shadow: 0 0 0 1px var(--accent-lime-muted), 0 8px 30px var(--accent-lime-glow); }
+.tb-plan .tb-badge { position: absolute; top: -10px; right: 12px; background: var(--accent-lime); color: #000; font: 700 10px var(--font-mono); padding: 2px 8px; }
+.tb-plan h3 { font-family: var(--font-display); font-weight: 800; font-size: 16px; text-transform: uppercase; color: #fff; }
+.tb-price { font-family: var(--font-display); font-weight: 900; font-size: 26px; color: var(--accent-lime); line-height: 1.1; }
+.tb-price small { font: 400 11px var(--font-mono); color: var(--text-subtle); }
+.tb-old { text-decoration: line-through; color: var(--text-muted); font: 400 12px var(--font-mono); }
+.tb-plan ul { list-style: none; padding: 0; margin: 0; font: 400 12px var(--font-mono); color: var(--text-subtle); display: grid; gap: 6px; }
+.tb-plan ul li::before { content: "→ "; color: var(--accent-lime); }
+.tb-pay-box { background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 18px; display: grid; gap: 10px; justify-items: start; }
+.tb-usage { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; background: var(--bg-card); border: 1px solid var(--border-subtle); padding: 10px 14px; font: 400 12px var(--font-mono); color: var(--text-subtle); }
+.tb-usage b { color: #fff; }
+.tb-meter { flex: 1 1 140px; height: 6px; background: rgba(255,255,255,.08); min-width: 100px; }
+.tb-meter > span { display: block; height: 100%; background: var(--accent-lime); }
+.tb-usage a { color: var(--accent-lime); cursor: pointer; text-decoration: underline; }
+.tb-expired { opacity: .55; }
+@media (max-width: 640px) { nav.flex .editorial-tab { padding-left: 8px; padding-right: 8px; font-size: 10px; } }
+
+/* resilience: keep hidden blocks hidden even if the remote Tailwind CSS fails to load */
+.hidden { display: none !important; }

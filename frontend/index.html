@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="uz" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tilmochbek — YouTube videolarni o'zbek tilida dublyaj qilish</title>
+    <meta name="description" content="Istalgan YouTube videoni sun'iy intellekt yordamida o'zbek tiliga tabiiy ovozda dublyaj qiling. Veb-sayt va Telegram bot orqali. Birinchi video bepul.">
+    <meta name="theme-color" content="#0E0E12">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Tilmochbek — YouTube videolarni o'zbekchaga dublyaj qiling">
+    <meta property="og:description" content="Havolani yuboring, AI o'zbek ovozida dublyaj qilingan tayyor videoni qaytaradi. Birinchi video bepul.">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23D4FF00'/%3E%3Ctext x='16' y='22' font-size='16' font-weight='700' text-anchor='middle' font-family='monospace'%3ETB%3C/text%3E%3C/svg%3E">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Tilmochbek","applicationCategory":"MultimediaApplication","inLanguage":"uz","description":"YouTube videolarni o'zbek tiliga AI yordamida dublyaj qilish","offers":{"@type":"Offer","price":"0","priceCurrency":"UZS"}}</script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    
+    <!-- Google Identity Services (GSI) -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Authentik Editorial Art Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css?v=7.0.0">
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Top Technical System Bar -->
+    <div class="w-full border-b border-white/5 bg-[#0A0A0D] px-4 py-1.5 text-[10px] font-mono-tech text-zinc-400 flex items-center justify-between z-50">
+        <div class="flex items-center gap-3">
+            <span class="flex items-center gap-1.5 text-zinc-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#D4FF00] animate-pulse"></span>
+                <span>SYS_STATUS: ONLINE</span>
+            </span>
+            <span class="hidden sm:inline text-zinc-600">//</span>
+            <span class="hidden sm:inline text-zinc-500">ENGINE: GROQ-WHISPER-V3 + OPENROUTER + EDGE-TTS</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-zinc-500">LOC: UZ-TASHKENT</span>
+            <span class="text-zinc-600">//</span>
+            <span class="text-[#D4FF00]">v7.0</span>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <div class="sticky top-0 z-40 w-full px-4 sm:px-8 py-3.5 editorial-header border-b border-white/10">
+        <header class="max-w-6xl mx-auto flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3 cursor-pointer group" onclick="switchTab('studio')">
+                <div class="w-7 h-7 bg-[#D4FF00] text-black font-mono-tech font-bold text-xs flex items-center justify-center transition-transform group-hover:scale-105">
+                    TB
+                </div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-xl font-display font-extrabold tracking-wider text-white uppercase">
+                        Tilmochbek
+                    </span>
+                    <span class="text-[10px] font-mono-tech text-[#D4FF00] tracking-widest uppercase">
+                        [UZ / AI.ENGINE]
+                    </span>
+                </div>
+            </div>
+
+            <!-- Technical Segmented Navigation Tabs -->
+            <nav class="flex items-center bg-[#15151A] p-1 border border-white/10">
+                <button 
+                    id="tabBtn-studio" 
+                    class="editorial-tab active px-4 py-1.5 flex items-center gap-2"
+                    onclick="switchTab('studio')"
+                >
+                    <span>[ 01 // STUDIO ]</span>
+                </button>
+                <button 
+                    id="tabBtn-history" 
+                    class="editorial-tab px-4 py-1.5 flex items-center gap-2"
+                    onclick="switchTab('history')"
+                >
+                    <span>[ 02 // TARIX ]</span>
+                    <span id="historyCountBadge" class="hidden text-[9px] px-1.5 py-0.2 bg-[#D4FF00] text-black font-bold">0</span>
+                </button>
+                <button
+                    id="tabBtn-plans"
+                    class="editorial-tab px-4 py-1.5 flex items-center gap-2"
+                    onclick="switchTab('plans')"
+                >
+                    <span>[ 03 // TARIFLAR ]</span>
+                </button>
+            </nav>
+
+            <!-- Right Actions / Telegram & Auth -->
+            <div class="flex items-center gap-3">
+                <!-- Telegram Bot Button -->
+                <button 
+                    onclick="openTelegramModal()" 
+                    class="editorial-outline-btn px-3 py-1.5 flex items-center gap-1.5"
+                    title="Telegram Bot"
+                >
+                    <i data-lucide="send" class="w-3.5 h-3.5 text-[#D4FF00]"></i>
+                    <span class="hidden md:inline">TG_BOT</span>
+                </button>
+
+                <!-- Auth Action (Logged Out) -->
+                <button 
+                    id="loginBtn" 
+                    onclick="openAuthModal()" 
+                    class="editorial-outline-btn px-4 py-1.5 flex items-center gap-1.5 bg-white/5 hover:bg-white hover:text-black transition-all"
+                >
+                    <span>[ KIRISH → ]</span>
+                </button>
+
+                <!-- User Dropdown (Logged In) -->
+                <div id="userMenuContainer" class="hidden relative">
+                    <button 
+                    id="userMenuBtn" 
+                    onclick="toggleUserMenu()" 
+                    class="flex items-center gap-2 px-3 py-1.5 bg-[#15151A] border border-white/15 hover:border-[#D4FF00] transition-colors"
+                >
+                    <span id="userNameHeader" class="text-xs font-mono-tech text-zinc-200 max-w-[90px] truncate">Foydalanuvchi</span>
+                    <img id="userAvatarImg" src="https://api.dicebear.com/7.x/bottts/svg?seed=Tilmochbek" alt="Avatar" class="w-5 h-5 bg-zinc-900 object-cover">
+                </button>
+
+                <!-- Dropdown Content -->
+                <div id="userDropdown" class="hidden absolute right-0 mt-2 w-56 editorial-card border border-white/20 p-2 z-50 text-xs font-mono-tech space-y-1">
+                    <div class="px-3 py-2 border-b border-white/10 text-zinc-400">
+                        <div class="font-bold text-white text-xs truncate" id="dropdownUserName">Foydalanuvchi</div>
+                        <div class="text-[10px] text-[#D4FF00] mt-0.5" id="dropdownPlan">// TARIF</div>
+                    </div>
+                    <button onclick="switchTab('history'); closeUserMenu();" class="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/5 text-zinc-200 text-left">
+                        <i data-lucide="film" class="w-3.5 h-3.5 text-[#D4FF00]"></i>
+                        <span>[ 02 // TARIX ]</span>
+                    </button>
+                    <button onclick="openTelegramModal(); closeUserMenu();" class="w-full flex items-center gap-2 px-3 py-2 hover:bg-white/5 text-zinc-200 text-left">
+                        <i data-lucide="send" class="w-3.5 h-3.5 text-zinc-400"></i>
+                        <span>TELEGRAM_BOT</span>
+                    </button>
+                    <div class="border-t border-white/10 my-1"></div>
+                    <button onclick="handleLogout(); closeUserMenu();" class="w-full flex items-center gap-2 px-3 py-2 hover:bg-red-950/40 text-red-400 text-left font-bold">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+                        <span>[ CHIQISH ]</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+
+<!-- Main Application Workspace -->
+<main class="max-w-4xl mx-auto px-4 sm:px-6 py-12 relative z-10 space-y-12 flex-grow w-full">
+    
+    <!-- ==================== TAB 1: STUDIO ==================== -->
+    <section id="tab-studio" class="tab-content space-y-10">
+        <div id="usageStrip" class="hidden tb-usage"></div>
+        
+        <!-- Hero Headline Section (Authentik Editorial Display) -->
+        <div class="space-y-4 pt-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 bg-[#15151A] border border-white/10 text-[11px] font-mono-tech text-[#D4FF00]">
+                <span class="w-1.5 h-1.5 bg-[#D4FF00]"></span>
+                <span>// NEYRON OVOZ VA TARJIMA STUDIYASI</span>
+            </div>
+
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-black text-white tracking-tight uppercase leading-none">
+                YouTube Videolarni Tabiiy O'zbek Tiliga Ovozlashtiring
+            </h1>
+
+            <p class="text-zinc-400 text-sm sm:text-base font-body max-w-2xl leading-relaxed">
+                Istalgan YouTube video havolasini kiriting. Groq Whisper orqali transkripsiya, OpenRouter aqlli tarjimasi va tabiiy neyron ovozlar sintezi bilan to'liq avtomatlashtirilgan dublyaj.
+            </p>
+        </div>
+
+        <!-- Studio Input Console (Editorial Card with Crosshairs) -->
+        <div class="editorial-card corner-crosshairs p-6 sm:p-8 space-y-8">
+            <div class="corner-crosshairs-bottom"></div>
+
+            <form id="dubForm" class="space-y-8">
+                
+                <!-- URL Input Section -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono-tech text-zinc-400">
+                        <span class="flex items-center gap-2">
+                            <span class="text-[#D4FF00] font-bold">[01]</span>
+                            <span class="text-white font-bold">// TARGET_SOURCE_URL</span>
+                        </span>
+                        <button 
+                            type="button" 
+                            id="pasteUrlBtn"
+                            onclick="handlePasteUrl()"
+                            class="editorial-tag-btn px-3 py-1 flex items-center gap-1.5"
+                            title="Vaqtinchalik xotiradan nusxa joylash"
+                        >
+                            <i data-lucide="clipboard" class="w-3 h-3"></i>
+                            <span>[ 📋 JOYLASH ]</span>
+                        </button>
+                    </div>
+
+                    <div class="editorial-input-wrapper flex items-center p-3 sm:p-4">
+                        <div class="text-zinc-500 mr-3 pointer-events-none flex items-center">
+                            <i data-lucide="link" class="w-4 h-4 text-zinc-400"></i>
+                        </div>
+                        <input 
+                            type="url" 
+                            id="youtubeUrl" 
+                            placeholder="https://www.youtube.com/watch?v=... yoki https://youtu.be/..." 
+                            required
+                            class="editorial-input"
+                        >
+                    </div>
+                </div>
+
+                <!-- Voice Selection Modules (01 SARDOR / 02 MADINA) -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-mono-tech text-zinc-400">
+                        <span class="flex items-center gap-2">
+                            <span class="text-[#D4FF00] font-bold">[02]</span>
+                            <span class="text-white font-bold">// DUBBING_VOICE_PROFILE</span>
+                        </span>
+                        <span class="text-[11px] text-zinc-500 font-mono-tech">EDGE-TTS NEURAL</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        
+                        <!-- 01 SARDOR (MALE) CASSETTE CARD -->
+                        <label class="editorial-voice-card voice-card active p-5 flex flex-col justify-between space-y-4">
+                            <input type="radio" name="voice_gender" value="male" checked class="sr-only">
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="voice-index-tag text-[10px] font-mono-tech px-2 py-0.5 bg-white/10 text-white font-bold border border-white/10">
+                                        01 // SARDOR
+                                    </span>
+                                    <span class="text-[10px] font-mono-tech text-zinc-400">// MALE</span>
+                                </div>
+                                <div class="waveform-container">
+                                    <div class="voice-wave-bar" style="height: 12px;"></div>
+                                    <div class="voice-wave-bar" style="height: 16px;"></div>
+                                    <div class="voice-wave-bar" style="height: 8px;"></div>
+                                    <div class="voice-wave-bar" style="height: 14px;"></div>
+                                    <div class="voice-wave-bar" style="height: 6px;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-display font-bold text-lg text-white">Sardor Neyron</h3>
+                                <p class="text-xs font-mono-tech text-zinc-400 mt-1">Chuqur, rasmiy va professional tembr</p>
+                            </div>
+
+                            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[10px] font-mono-tech text-zinc-400">
+                                <span>PROFILE: UZ-SARDOR-NEURAL</span>
+                                <div class="voice-radio-indicator w-3 h-3 border border-white/30 rounded-full"></div>
+                            </div>
+                        </label>
+
+                        <!-- 02 MADINA (FEMALE) CASSETTE CARD -->
+                        <label class="editorial-voice-card voice-card p-5 flex flex-col justify-between space-y-4">
+                            <input type="radio" name="voice_gender" value="female" class="sr-only">
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span class="voice-index-tag text-[10px] font-mono-tech px-2 py-0.5 bg-white/10 text-white font-bold border border-white/10">
+                                        02 // MADINA
+                                    </span>
+                                    <span class="text-[10px] font-mono-tech text-zinc-400">// FEMALE</span>
+                                </div>
+                                <div class="waveform-container">
+                                    <div class="voice-wave-bar" style="height: 10px;"></div>
+                                    <div class="voice-wave-bar" style="height: 14px;"></div>
+                                    <div class="voice-wave-bar" style="height: 6px;"></div>
+                                    <div class="voice-wave-bar" style="height: 12px;"></div>
+                                    <div class="voice-wave-bar" style="height: 8px;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 class="font-display font-bold text-lg text-white">Madina Neyron</h3>
+                                <p class="text-xs font-mono-tech text-zinc-400 mt-1">Yumshoq, jozibali va tabiiy ohang</p>
+                            </div>
+
+                            <div class="pt-3 border-t border-white/10 flex items-center justify-between text-[10px] font-mono-tech text-zinc-400">
+                                <span>PROFILE: UZ-MADINA-NEURAL</span>
+                                <div class="voice-radio-indicator w-3 h-3 border border-white/30 rounded-full"></div>
+                            </div>
+                        </label>
+
+                    </div>
+                </div>
+
+                <!-- Primary Action CTA Button -->
+                <button 
+                    type="submit" 
+                    id="submitBtn"
+                    class="editorial-cta-btn w-full py-4 px-6 flex items-center justify-center gap-3 transition-all"
+                >
+                    <span>TILMOCHNI ISHGA TUSHIRISH</span>
+                    <span class="text-lg">→</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Live Progress Stage Pipeline Card (Initially Hidden) -->
+        <div id="progressCard" class="hidden editorial-card corner-crosshairs p-6 sm:p-8 space-y-6">
+            <div class="corner-crosshairs-bottom"></div>
+            
+            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-[#D4FF00] animate-ping"></span>
+                    <div>
+                        <div class="text-[10px] font-mono-tech text-[#D4FF00] tracking-widest">// PIPELINE_EXECUTION</div>
+                        <h3 id="progressStepTitle" class="font-display font-bold text-base text-white">Bajarilmoqda...</h3>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span id="progressPercentage" class="font-mono-tech font-bold text-2xl text-[#D4FF00]">0%</span>
+                </div>
+            </div>
+
+            <!-- Technical Pipeline Progress Bar -->
+            <div class="pipeline-progress-bar w-full">
+                <div id="progressBar" class="pipeline-progress-fill" style="width: 0%"></div>
+            </div>
+
+            <!-- 5-Node Technical Pipeline Steps -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-2">
+                <div id="step-dl" class="pipeline-step-node p-3 flex flex-col items-center gap-1.5 text-center">
+                    <span class="step-index-badge text-[9px] px-1.5 py-0.2 bg-white/10 font-bold">[01/05]</span>
+                    <span class="font-bold">YUKLAB OLISH</span>
+                </div>
+                <div id="step-stt" class="pipeline-step-node p-3 flex flex-col items-center gap-1.5 text-center">
+                    <span class="step-index-badge text-[9px] px-1.5 py-0.2 bg-white/10 font-bold">[02/05]</span>
+                    <span class="font-bold">TRANSKRIPSIYA</span>
+                </div>
+                <div id="step-trans" class="pipeline-step-node p-3 flex flex-col items-center gap-1.5 text-center">
+                    <span class="step-index-badge text-[9px] px-1.5 py-0.2 bg-white/10 font-bold">[03/05]</span>
+                    <span class="font-bold">TARJIMA</span>
+                </div>
+                <div id="step-tts" class="pipeline-step-node p-3 flex flex-col items-center gap-1.5 text-center">
+                    <span class="step-index-badge text-[9px] px-1.5 py-0.2 bg-white/10 font-bold">[04/05]</span>
+                    <span class="font-bold">OVOZ</span>
+                </div>
+                <div id="step-mix" class="pipeline-step-node col-span-2 sm:col-span-1 p-3 flex flex-col items-center gap-1.5 text-center">
+                    <span class="step-index-badge text-[9px] px-1.5 py-0.2 bg-white/10 font-bold">[05/05]</span>
+                    <span class="font-bold">MIKSING</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Video Preview Card (Initially Hidden) -->
+        <div id="resultCard" class="hidden editorial-card corner-crosshairs p-6 sm:p-8 space-y-6">
+            <div class="corner-crosshairs-bottom"></div>
+
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-5">
+                <div>
+                    <div class="text-[10px] font-mono-tech text-[#D4FF00] tracking-widest">// OUTPUT_RENDER_COMPLETE</div>
+                    <h3 id="videoTitleDisplay" class="font-display font-extrabold text-xl text-white mt-1">YouTube Dubbed Video</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button 
+                        id="copyLinkBtn"
+                        onclick="copyVideoLink()"
+                        class="editorial-outline-btn px-4 py-2 flex items-center gap-2"
+                    >
+                        <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                        <span>HAVOLANI NUSXALASH</span>
+                    </button>
+                    <a 
+                        id="downloadBtn" 
+                        href="#" 
+                        download
+                        class="editorial-cta-btn px-4 py-2 flex items-center gap-2 text-xs"
+                    >
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        <span>YUKLAB OLISH (MP4)</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cinema Frame Video Player -->
+            <div class="aspect-video bg-black border border-white/10 relative overflow-hidden">
+                <video id="videoPlayer" controls class="w-full h-full object-contain">
+                    <source id="videoSource" src="" type="video/mp4">
+                    Brauzeringiz videoni qo'llab-quvvatlamaydi.
+                </video>
+            </div>
+
+            <!-- Subtitle Transcript Segments Accordion -->
+            <div class="space-y-3 pt-2">
+                <div class="flex items-center justify-between text-xs font-mono-tech text-zinc-400">
+                    <span class="flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5 text-[#D4FF00]"></i>
+                        <span class="text-white font-bold">// TRANSLATED_SUBTITLE_TIMECODES</span>
+                    </span>
+                </div>
+                <div id="segmentsContainer" class="max-h-72 overflow-y-auto space-y-2 pr-2 editorial-scrollbar font-mono-tech text-xs">
+                    <!-- Dynamic segments rendered by app.js -->
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ==================== TAB 2: HISTORY ==================== -->
+    <section id="tab-history" class="tab-content hidden space-y-8">
+        
+        <div class="flex items-center justify-between border-b border-white/10 pb-5">
+            <div>
+                <div class="text-[10px] font-mono-tech text-[#D4FF00] tracking-widest">// ARCHIVE_CATALOG</div>
+                <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-white">Mening Videolarim</h2>
+                <p class="text-xs font-mono-tech text-zinc-400 mt-1">Tilmochbek orqali tayyorlangan barcha dublyaj qilingan video arxivlar</p>
+            </div>
+            <button 
+                onclick="loadUserHistory()" 
+                class="editorial-outline-btn px-3 py-1.5 flex items-center gap-1.5"
+            >
+                <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+                <span>[ YANGILASH ]</span>
+            </button>
+        </div>
+
+        <!-- History Cards Grid -->
+        <div id="historyGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Dynamic history cards rendered by app.js -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyHistory" class="hidden editorial-card corner-crosshairs p-12 text-center space-y-4">
+            <div class="corner-crosshairs-bottom"></div>
+            <div class="w-10 h-10 border border-white/20 text-[#D4FF00] flex items-center justify-center mx-auto">
+                <i data-lucide="film" class="w-5 h-5"></i>
+            </div>
+            <div>
+                <h3 class="text-base font-display font-bold text-white">Hozircha videolar yo'q</h3>
+                <p class="text-xs font-mono-tech text-zinc-400 mt-1 max-w-sm mx-auto">Studio orqali istalgan YouTube videoni ovozlashtiring, natijalar avtomatik katalogda saqlanadi.</p>
+            </div>
+            <button onclick="switchTab('studio')" class="editorial-outline-btn px-4 py-2 inline-flex items-center gap-2">
+                <span>[ STUDIO'GA O'TISH → ]</span>
+            </button>
+        </div>
+
+    </section>
+
+    <!-- ==================== TAB 3: PLANS ==================== -->
+    <section id="tab-plans" class="tab-content hidden space-y-8">
+        <div class="space-y-2">
+            <div class="text-[10px] font-mono-tech text-[#D4FF00]">// PRICING</div>
+            <h2 class="text-2xl font-display font-black text-white uppercase">Tariflar</h2>
+            <p class="text-xs font-mono-tech text-zinc-400">Birinchi video bepul. Keyin o'zingizga mosini tanlang. Do'stingizni taklif qilsangiz, har biri uchun +1 video.</p>
+        </div>
+        <div id="plansGrid" class="tb-plans-grid"></div>
+        <div class="tb-pay-box">
+            <div class="text-[10px] font-mono-tech text-[#D4FF00]">// TO'LOV</div>
+            <p id="paymentInfo" class="text-xs font-mono-tech text-zinc-300"></p>
+            <a id="payTelegramLink" href="https://t.me/tilmoch_bek_bot" target="_blank" rel="noopener" class="editorial-cta-btn py-3 px-5 inline-flex items-center gap-2 text-xs">
+                <span>TELEGRAM ORQALI FAOLLASHTIRISH</span>
+            </a>
+        </div>
+        <div id="referralBox" class="hidden tb-pay-box">
+            <div class="text-[10px] font-mono-tech text-[#D4FF00]">// DO'ST TAKLIF QILING (+1 VIDEO)</div>
+            <p class="text-xs font-mono-tech text-zinc-300 break-all" id="referralLink"></p>
+            <button onclick="copyReferral()" class="editorial-outline-btn py-2 px-4 text-xs">[ NUSXALASH ]</button>
+        </div>
+    </section>
+
+</main>
+
+<!-- Editorial Brutalist Footer -->
+<footer class="w-full border-t border-white/10 bg-[#0A0A0D] py-8 px-4 sm:px-8 mt-12 z-10">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono-tech text-zinc-400">
+        <div class="flex items-center gap-3">
+            <span class="text-white font-bold font-display">TILMOCHBEK.UZ</span>
+            <span class="text-zinc-600">//</span>
+            <span>&copy; 2026 Tilmochbek</span>
+        </div>
+        <div class="flex items-center gap-4 text-[11px]">
+            <a href="https://t.me/tilmoch_bek_bot" target="_blank" class="hover:text-[#D4FF00] transition-colors">@tilmoch_bek_bot</a>
+            <span class="text-zinc-600">//</span>
+            <span class="text-zinc-500">Tayyor videolar 24 soat saqlanadi</span>
+        </div>
+    </div>
+</footer>
+
+
+<!-- ==================== AUTH MODAL ==================== -->
+<div id="authModal" class="hidden fixed inset-0 z-50 editorial-modal-backdrop flex items-center justify-center p-4">
+    <div class="editorial-card corner-crosshairs border border-white/20 p-6 sm:p-8 max-w-sm w-full space-y-6 relative">
+        <div class="corner-crosshairs-bottom"></div>
+        
+        <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="space-y-2">
+            <div class="text-[10px] font-mono-tech text-[#D4FF00]">// AUTH_GATEWAY</div>
+            <h3 class="text-xl font-display font-black text-white uppercase">Tizimga Kirish</h3>
+            <p class="text-xs font-mono-tech text-zinc-400">Profilingizga kiring va barcha videolaringiz tarixini arxivlang.</p>
+        </div>
+
+        <div class="space-y-3 pt-2">
+            <div id="gsiContainer" class="flex justify-center"></div>
+
+            <p id="googleMissing" class="hidden text-xs font-mono-tech text-zinc-500 text-center">Google orqali kirish hozircha sozlanmagan. Telegram botdan foydalaning.</p>
+            <button 
+                id="demoLoginBtn"
+                onclick="handleDemoLogin()"
+                class="hidden w-full py-3 px-4 editorial-outline-btn flex items-center justify-center gap-2 hover:bg-white/10"
+            >
+                <i data-lucide="sparkles" class="w-4 h-4 text-[#D4FF00]"></i>
+                <span>[ 1-CLICK TEST KIRISH ]</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ==================== TELEGRAM BOT MODAL ==================== -->
+<div id="telegramModal" class="hidden fixed inset-0 z-50 editorial-modal-backdrop flex items-center justify-center p-4">
+    <div class="editorial-card corner-crosshairs border border-white/20 p-6 sm:p-8 max-w-sm w-full space-y-6 relative">
+        <div class="corner-crosshairs-bottom"></div>
+        
+        <button onclick="closeTelegramModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+
+        <div class="space-y-2">
+            <div class="text-[10px] font-mono-tech text-[#D4FF00]">// BOT_INTEGRATION</div>
+            <h3 class="text-xl font-display font-black text-white uppercase">Telegram Bot</h3>
+            <p class="text-xs font-mono-tech text-zinc-400">Telegram orqali YouTube havolasini yuboring va tayyor videoni oling.</p>
+        </div>
+
+        <div class="space-y-4 pt-2">
+            <a 
+                id="openTelegramBotLink" 
+                href="https://t.me/tilmoch_bek_bot" 
+                target="_blank"
+                class="editorial-cta-btn w-full py-3.5 px-4 flex items-center justify-center gap-2 text-xs"
+            >
+                <i data-lucide="send" class="w-4 h-4"></i>
+                <span>@tilmoch_bek_bot OCHISH</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Application Logic -->
+<script src="/static/app.js?v=7.0.0"></script>
+</body>
+</html>

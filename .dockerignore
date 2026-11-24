@@ -1,0 +1,7 @@
+.env
+storage
+_backup_*
+pencilplaybook
+**/__pycache__
+tests
+*.bat
